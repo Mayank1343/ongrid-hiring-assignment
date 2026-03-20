@@ -59,9 +59,11 @@ function App() {
     try {
       const r = await fetch(`${API}/reports/monthly-trend`);
       const data = await r.json();
-      const series = data.monthly_series.map((row) => ({
-        month: row.month,
-        total: row.total,
+
+      // corrected field mismatch and added [] empty array as fallback.
+      const series = (data.trend_rows || []).map((row) => ({
+        month: row.period,
+        total: Number(row.spend),
       }));
       setTrendData(series);
     } catch (e) {
@@ -133,7 +135,7 @@ function App() {
     loadTrend();
   };
 
-  const pageTotal = expenses.reduce((a, e) => a + e.amount, 0);
+  const pageTotal = expenses.reduce((a, e) => a + Number(e.amount), 0); //Converting from string to Number.
   const totalPages = Math.max(1, Math.floor(total / perPage));
 
   return (
@@ -242,7 +244,7 @@ function App() {
           </div>
         </div>
         <p className="muted">
-          Sum on this page (strings): <strong>{String(pageTotal)}</strong>
+          Sum on this page: <strong>{(pageTotal)}</strong>  
         </p>
         <div className="chart-wrap">
           <ResponsiveContainer width="100%" height="100%">
@@ -253,7 +255,9 @@ function App() {
               <Tooltip
                 contentStyle={{ background: "#1a1f26", border: "1px solid #38444d" }}
               />
-              <Bar dataKey="value" fill="#1d9bf0" name="Total" />
+
+                  {/* backend & frontend dataKey mismatch resolved.  */}
+              {<Bar dataKey="amt" fill="#1d9bf0" name="Total" />}
             </BarChart>
           </ResponsiveContainer>
         </div>

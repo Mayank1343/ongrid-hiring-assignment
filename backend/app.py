@@ -52,10 +52,12 @@ def create_app():
     def list_expenses():
         page = int(request.args.get("page", 1))
         per_page = min(int(request.args.get("per_page", 10)), 50)
-        offset = page * per_page
-        q = Expense.query
-        rows = q.order_by(Expense.expense_date.desc(), Expense.id.desc()).offset(offset).limit(per_page).all()
-        total = Expense.query.count()
+        offset = (page - 1) * per_page  #offset miscalulation earlier.
+        
+        # handeling proper deletion.
+        q = Expense.query.filter(Expense.is_deleted == 0)
+        rows = (q.order_by(Expense.expense_date.desc(), Expense.id.desc()).offset(offset).limit(per_page).all())
+        total = q.count()
         return jsonify(
             {
                 "items": [

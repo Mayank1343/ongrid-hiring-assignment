@@ -140,3 +140,36 @@ Also fixed total count.
 
 ### Result  
 Deleted items no longer appear and pagination is correct.
+
+---
+
+## Enhancement: Handling Backend Failures Gracefully
+
+### Observation  
+During development, when the backend server stopped unexpectedly, the frontend started showing errors like failed API calls or blank sections without any clear message.
+
+### Analysis  
+The frontend was making API calls using fetch, but there was no proper error handling or user feedback when a request failed.
+
+### Root Cause  
+Missing error handling in API calls, which caused silent failures in the UI when the backend was not reachable.
+
+### Suggestion / Improvement  
+Add basic error handling using try-catch and check response status. Show a simple message (like an alert) when the backend is not responding.
+
+Example:
+```js
+try {
+  const res = await fetch(`${API}/expenses`);
+
+  if (!res.ok) throw new Error("Server error");
+
+  const data = await res.json();
+} catch (e) {
+  alert("Backend is not running or failed to respond.");
+}
+
+### Impact  
+- Better user experience  
+- Easier debugging during failures  
+- Prevents confusion due to blank or broken UI

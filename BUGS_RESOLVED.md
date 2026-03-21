@@ -6,6 +6,8 @@
 While running the backend, the application crashed with an authentication error:  
 `Access denied for user 'root'@'localhost'` 
 The backend was trying to connect to MySQL without proper credentials.
+<img width="940" height="294" alt="image" src="https://github.com/user-attachments/assets/14528e15-2a29-4746-971f-28067e6e0d67" />
+
 
 ### Root Cause  
 The database connection string was missing the password.
@@ -24,12 +26,16 @@ Backend connected successfully and tables were created.
 Backend crashed with error:  
 `cryptography package is required for sha256_password authentication`
 This occurred during MySQL authentication using PyMySQL.
+<img width="940" height="232" alt="image" src="https://github.com/user-attachments/assets/e3027633-598a-4b2d-8b37-11e19e05e811" />
+
 
 ### Root Cause  
 MySQL 8 uses a newer authentication method that requires the cryptography package.
 
 ### Fix  
 Installed the dependency using pip.
+<img width="940" height="290" alt="image" src="https://github.com/user-attachments/assets/023a8e6f-3328-40dd-900c-308de4cb41aa" />
+
 
 ### Result  
 Authentication worked and backend started normally.
@@ -42,6 +48,10 @@ Authentication worked and backend started normally.
 ### Observation  
 API returned `total = 1` but `items = []`.
 So, data existed in the database but was not being fetched correctly.
+<img width="940" height="243" alt="image" src="https://github.com/user-attachments/assets/a52f8a07-ec27-4659-9863-36dceab4fdcb" />
+
+<img width="640" height="273" alt="image" src="https://github.com/user-attachments/assets/a244e5cc-b050-4456-8c0e-8f79631f6de8" />
+
 
 ### Root Cause  
 Wrong offset calculation in pagination.
@@ -62,6 +72,8 @@ Expenses started appearing correctly.
 ### Observation  
 Total sum was showing as a long concatenated string.
 And values were treated as strings instead of numbers.
+<img width="938" height="564" alt="image" src="https://github.com/user-attachments/assets/e63b256c-8373-4030-8242-bde8e587aa71" />
+
 
 ### Root Cause  
 No type conversion before summing up.
@@ -104,6 +116,8 @@ Chart started displaying correctly.
 Error:  
 `Cannot read properties of undefined (reading 'map')`
 Frontend expected a different response format than backend.
+<img width="939" height="139" alt="image" src="https://github.com/user-attachments/assets/b3d818bf-d177-497d-8e68-32b0dceec6cb" />
+
 
 ### Root Cause  
 Mismatch between:
@@ -127,6 +141,8 @@ Crash resolved and trend chart works.
 ### Observation  
 Deleted expenses were still showing in UI.
 Soft delete was implemented (`is_deleted = 1`), but API was still returning those records.
+<img width="939" height="463" alt="image" src="https://github.com/user-attachments/assets/73cb11e5-16aa-4a0e-ad2d-0afa9db03152" />
+
 
 ### Root Cause  
 Missing filter in query.

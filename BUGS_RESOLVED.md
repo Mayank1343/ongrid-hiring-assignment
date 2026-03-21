@@ -143,7 +143,7 @@ Deleted items no longer appear and pagination is correct.
 
 ---
 
-## Enhancement: Handling Backend Failures Gracefully
+## Enhancement: Backend Failures Handling 
 
 ### Observation  
 During development, when the backend server stopped unexpectedly, the frontend started showing errors like failed API calls or blank sections without any clear message.
@@ -168,6 +168,7 @@ try {
 } catch (e) {
   alert("Backend is not running or failed to respond.");
 }
+```
 
 ### Impact  
 - Better user experience  
